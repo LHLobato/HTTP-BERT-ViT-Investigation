@@ -62,7 +62,8 @@ print ("Good requests: ",len(good_requests))
 
 all_requests = all_requests
 labels = labels
-res = 224
+res = 64
+
 pipeline = Pipeline([
     ('tfidf', TfidfVectorizer(analyzer = 'char', sublinear_tf = True, lowercase=False, max_features= res*res, ngram_range=(3,3))),
     ('pca', PCA(n_components=res)),
@@ -76,6 +77,7 @@ image_reshapes = {
     "GADF": GramianAngularField(method = "difference"),
     "RPLOT": RecurrencePlot(dimension=1,threshold='point', percentage=20) 
 }
+
 for image_type, transformer in image_reshapes.items():
     X_1d_transformed = transformer.fit_transform(X_processed)
     X_train, X_temp, y_train, y_temp = train_test_split(

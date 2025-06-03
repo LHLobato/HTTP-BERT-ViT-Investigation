@@ -33,7 +33,7 @@ labels = labels_Bad + labels_Good
 print ("Total requests : ",len(all_requests))
 print ("Bad requests: ",len(bad_requests))
 print ("Good requests: ",len(good_requests))
-res = 224
+res = 144
 vectorizer = TfidfVectorizer(analyzer="char", sublinear_tf=True,lowercase=False, max_features = res*res)
 X = vectorizer.fit_transform(all_requests)
 scaler = MaxAbsScaler()
