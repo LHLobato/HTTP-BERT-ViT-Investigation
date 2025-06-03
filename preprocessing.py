@@ -6,8 +6,8 @@ import json
 
 normal_file_raw = 'normalTrafficTraining.txt'
 anomaly_file_raw = 'anomalousTrafficTest.txt'
-normal_file_parse = 'normalRequestTraining.txt'
-anomaly_file_parse = 'anomalousRequestTest.txt'
+normal_file_parse = 'normalRequestTraining2.txt'
+anomaly_file_parse = 'anomalousRequestTest2.txt'
 
 def parse_file(file_in, file_out):
     fin = open(file_in, 'r', encoding='utf-8', errors='ignore')
@@ -68,6 +68,33 @@ def parse_file(file_in, file_out):
     print(f"Finished parsing {len(res)} requests from {file_in}")
     fin.close()
     fout.close()
+
+def parse_file2(file_in, file_out):
+    fin = open(file_in)
+    fout = io.open(file_out, "w", encoding="utf-8")
+    lines = fin.readlines()
+    res = []
+    for i in range(len(lines)):
+        line = lines[i].strip()
+        if line.startswith("GET"):
+            res.append("GET" + line.split(" ")[1])
+        elif line.startswith("POST") or line.startswith("PUT"):
+            url = line.split(' ')[0] + line.split(' ')[1]
+            j = 1
+            while True:
+                if lines[i + j].startswith("Content-Length"):
+                    break
+                j += 1
+            j += 1
+            data = lines[i + j + 1].strip()
+            url += '?' + data
+            res.append(url)
+    for line in res:
+        line = urllib.parse.unquote(line).replace('\n','').lower()
+        fout.writelines(line + '\n')
+    print ("finished parse ",len(res)," requests")
+    fout.close()
+    fin.close()
 
 parse_file(normal_file_raw,normal_file_parse)
 parse_file(anomaly_file_raw,anomaly_file_parse)
