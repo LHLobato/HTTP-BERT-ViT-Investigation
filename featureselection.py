@@ -6,6 +6,7 @@ from sklearn.ensemble import RandomForestClassifier
 import numpy as np
 import io
 from sklearn.pipeline import Pipeline
+from transformers import BertModel, BertTokenizer
 from sklearn.preprocessing import MaxAbsScaler, MinMaxScaler 
 
 
@@ -20,8 +21,18 @@ def loadData(file):
     return result
 
 
-
-
+def extract_features(text, model, tokenizer, device = 'cuda'):
+    input_ids = torch.tensor([tokenizer.encode(text, add_special_tokens=True)])
+    with torch.no_grad():
+        outputs = model(input_ids)
+        hidden_states = outputs[2]
+    token_vecs = []
+    for layer in range(-4, 0):
+        token_vecs.append(hidden_states[layer][0])
+    features = []
+    for token in token_vecs:
+        features.append(torch.mean(token, dim=0))
+    return torch.stack(features)
 
 bad_requests = loadData('PreProcessedAnomalous.txt')
 good_requests = loadData('PreprocessedNormalTraining.txt')
@@ -33,18 +44,22 @@ labels = labels_Bad + labels_Good
 print ("Total requests : ",len(all_requests))
 print ("Bad requests: ",len(bad_requests))
 print ("Good requests: ",len(good_requests))
-res = 144
+res = 64
 vectorizer = TfidfVectorizer(analyzer="char", sublinear_tf=True,lowercase=False, max_features = res*res)
 X = vectorizer.fit_transform(all_requests)
-scaler = MaxAbsScaler()
-X = scaler.fit_transform(X)
+
 X_train, X_test, y_train, y_test = train_test_split(
     X, labels, test_size=0.2, random_state=42
 )
+
+
 classifier = RandomForestClassifier(n_estimators=200)
 classifier.fit(X_train, y_train)
 y_pred = classifier.predict(X_test)
 y_probs = classifier.predict_proba(X_test)[:, 1]  # Probabilidades da classe positiva
 test_auc = roc_auc_score(y_test, y_probs)
+print("-------FOR TFIDVECTORIZER-----------")
 print("AUC no conjunto de teste:", test_auc)
 print("Acurácia: ", accuracy_score(y_test, y_pred))
+print(f"Desempenho atingido com resolução: {res}")
+

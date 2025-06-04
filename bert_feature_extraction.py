@@ -11,7 +11,7 @@ def loadData(file):
             result.append(d)
     return result
 
-def extract_features(text, model, tokenizer):
+def extract_features(text, model, tokenizer, device = 'cuda'):
     input_ids = torch.tensor([tokenizer.encode(text, add_special_tokens=True)])
     with torch.no_grad():
         outputs = model(input_ids)
@@ -31,17 +31,31 @@ all_requests = bad_requests + good_requests
 labels_Bad = [1] * len(bad_requests)
 labels_Good = [0] * len(good_requests)
 labels = labels_Bad + labels_Good
+
 print("All request loaded")
 print("All labels signed")
 
 model = BertModel.from_pretrained('bert-base-uncased', output_hidden_states=True)
 tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
-
 print("Model Loaded")
 
 features = []
-for i in range(len(all_requests[10])):
-    features.append(extract_features(all_requests[i]))
+for i in range(len(all_requests)):
+    features.append(extract_features(all_requests[i],model, tokenizer))
 features = torch.cat(features).numpy()
 
-print(f"The shape of a single feature: {features[0].shape}")
+X_train, X_test, y_train, y_test = train_test_split(
+    features, labels, test_size=0.2, random_state=42
+)
+
+clf = RandomForestClassifier(n_estimators=200)
+clf.fit(X_train, y_train)
+
+y_pred = clf.predict(X_test)
+y_probs = classifier.predict_proba(X_test)[:, 1]  # Probabilidades da classe positiva
+test_auc = roc_auc_score(y_test, y_probs)
+print("-------FOR BERT TOKENIZER-----------")
+print("AUC no conjunto de teste:", test_auc)
+print("Acurácia: ", accuracy_score(y_test, y_pred))
+print(f"Desempenho atingido com resolução: {res}")
+

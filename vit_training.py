@@ -13,7 +13,6 @@ import os
 import torch.backends.cudnn as cudnn
 import config
 from transformers import get_cosine_schedule_with_warmup
-from torch.cuda.amp import GradScaler, autocast
 from transformers import ViTForImageClassification, ViTConfig
 #Laço de repetição que permite fazer os testes com as três divisões de dados que foram definidas
 
@@ -44,7 +43,7 @@ def save_model(model, path):
     
 def train(model, num_epochs, train_loader, val_loader, paticence = 10): 
         start_time = time.time()
-        scaler = GradScaler()
+        scaler = toch.amp.GradScaler()
         print(f'Iniciando treinamento...')
         epoch_counter = 0
         paticence_limit = 0
@@ -75,7 +74,7 @@ def train(model, num_epochs, train_loader, val_loader, paticence = 10):
                 images, labels = images.to(device), labels.to(device).float().unsqueeze(1)
                 
                 optimizer.zero_grad()
-                with autocast():
+                with toch.amp.autocast():
                     outputs = model(images)
                     
                     loss = criterion(outputs.logits, labels)
@@ -100,7 +99,7 @@ def train(model, num_epochs, train_loader, val_loader, paticence = 10):
                 for images, labels in val_loader:
                     images, labels = images.to(device), labels.to(device).float().unsqueeze(1)
 
-                    with autocast():
+                    with toch.amp.autocast():
                         outputs = model(images)
                         loss = criterion(outputs.logits, labels)
                     val_loss += loss.item()
@@ -163,7 +162,7 @@ def test(model, test_loader,optimal_threshold):
         with torch.no_grad():  
             for images, labels in test_loader:
                 images, labels = images.to(device), labels.to(device).float().unsqueeze(1)
-                with autocast():
+                with toch.amp.autocast():
                     outputs = model(images)
                     loss = criterion(outputs.logits, labels)
                 test_loss += loss.item()

@@ -5,7 +5,7 @@ from sklearn.decomposition import PCA
 import numpy as np
 import io
 from pyts.image import GramianAngularField, RecurrencePlot
-from transformers import BertModel, BertTokenizer
+#from transformers import BertModel, BertTokenizer
 import torch
 import os 
 import matplotlib.pyplot as plt
