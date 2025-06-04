@@ -74,7 +74,7 @@ def train(model, num_epochs, train_loader, val_loader, paticence = 10):
                 images, labels = images.to(device), labels.to(device).float().unsqueeze(1)
                 
                 optimizer.zero_grad()
-                with torch.amp.autocast():
+                with torch.amp.autocast('cuda'):
                     outputs = model(images)
                     
                     loss = criterion(outputs.logits, labels)
@@ -99,7 +99,7 @@ def train(model, num_epochs, train_loader, val_loader, paticence = 10):
                 for images, labels in val_loader:
                     images, labels = images.to(device), labels.to(device).float().unsqueeze(1)
 
-                    with torch.amp.autocast():
+                    with torch.amp.autocast('cuda'):
                         outputs = model(images)
                         loss = criterion(outputs.logits, labels)
                     val_loss += loss.item()
@@ -162,7 +162,7 @@ def test(model, test_loader,optimal_threshold):
         with torch.no_grad():  
             for images, labels in test_loader:
                 images, labels = images.to(device), labels.to(device).float().unsqueeze(1)
-                with torch.amp.autocast():
+                with torch.amp.autocast('cuda'):
                     outputs = model(images)
                     loss = criterion(outputs.logits, labels)
                 test_loss += loss.item()

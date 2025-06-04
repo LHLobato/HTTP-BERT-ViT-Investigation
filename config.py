@@ -5,9 +5,9 @@ DATA_DIR_0 = {
 }
 
 DATA_DIR_1 = {
-    "test":f"datasets/TFIDVGADF/gaf_dataset1/test", 
-    "train":f"datasets/TFIDVGADF/gaf_dataset1/train",
-    "val":f"datasets/TFIDVGADF/gaf_dataset1/val",
+    "test":f"datasets/TFIDV/GADF/test", 
+    "train":f"datasets/TFIDV/GADF/train",
+    "val":f"datasets/TFIDV/GADF/val",
 }
 DATA_DIR_2 = {
     "test":f"datasets/TFIDV/RPLOT/test", 
