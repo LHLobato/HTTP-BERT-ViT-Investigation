@@ -8,7 +8,7 @@ import io
 from sklearn.pipeline import Pipeline
 from transformers import BertModel, BertTokenizer
 from sklearn.preprocessing import MaxAbsScaler, MinMaxScaler 
-
+import torch
 
 def loadData(file):
     with open(file, 'r', encoding="utf8") as f:

@@ -1,5 +1,8 @@
 from transformers import BertModel, BertTokenizer
 import torch
+from sklearn.metrics import roc_auc_score, accuracy_score
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
 
 def loadData(file):
     with open(file, 'r', encoding="utf8") as f:
@@ -51,17 +54,19 @@ print("Model Loaded")
 features = []
 for i in range(len(all_requests)):
     features.append(extract_features(all_requests[i],model, tokenizer))
-features = torch.cat(features).numpy().to('cpu')
+features = torch.cat(features).to('cpu').numpy()
 print("Shape of unique Feature", features[0].shape)
 X_train, X_test, y_train, y_test = train_test_split(
     features, labels, test_size=0.2, random_state=42
 )
 
+res = 27
+
 clf = RandomForestClassifier(n_estimators=200)
 clf.fit(X_train, y_train)
 
 y_pred = clf.predict(X_test)
-y_probs = classifier.predict_proba(X_test)[:, 1]  # Probabilidades da classe positiva
+y_probs = clf.predict_proba(X_test)[:, 1]  # Probabilidades da classe positiva
 test_auc = roc_auc_score(y_test, y_probs)
 print("-------FOR BERT TOKENIZER-----------")
 print("AUC no conjunto de teste:", test_auc)

@@ -5,12 +5,11 @@ from sklearn.decomposition import PCA
 import numpy as np
 import io
 from pyts.image import GramianAngularField, RecurrencePlot
-#from transformers import BertModel, BertTokenizer
-import torch
 import os 
 import matplotlib.pyplot as plt
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import MinMaxScaler 
+
 def loadData(file):
     with open(file, 'r', encoding="utf8") as f:
         data = f.readlines()
@@ -34,20 +33,6 @@ def save_images(dataset_name, X_data, y_data, arg):
         plt.imsave(file_path, image, cmap=colors)
     print(f"Imagens salvas em {base_dir}/{dataset_name}")
 
-
-def extract_features(text, model, tokenizer):
-    input_ids = torch.tensor([tokenizer.encode(text, add_special_tokens=True)])
-    with torch.no_grad():
-        outputs = model(input_ids)
-        hidden_states = outputs[2]
-    token_vecs = []
-    for layer in range(-4, 0):
-        token_vecs.append(hidden_states[layer][0])
-    features = []
-    for token in token_vecs:
-        features.append(torch.mean(token, dim=0))
-    return torch.stack(features)
-
 bad_requests = loadData('PreProcessedAnomalous.txt')
 good_requests = loadData('PreprocessedNormalTraining.txt')
 
@@ -60,17 +45,15 @@ print ("Total requests : ",len(all_requests))
 print ("Bad requests: ",len(bad_requests))
 print ("Good requests: ",len(good_requests))
 
-all_requests = all_requests
-labels = labels
 res = 64
 
 pipeline = Pipeline([
     ('tfidf', TfidfVectorizer(analyzer = 'char', sublinear_tf = True, lowercase=False, max_features= res*res, ngram_range=(3,3))),
-    ('pca', PCA(n_components=res)),
     ('scaler', MinMaxScaler())
 ])
 
 X_processed = pipeline.fit_transform(all_requests)
+X_processed = X_processed.reshape(-1, res,res)
 
 image_reshapes = {
     "GASF": GramianAngularField(method = "summation"),
@@ -103,5 +86,4 @@ for image_type, transformer in image_reshapes.items():
         save_images(dataset_name, X_data, y_data, image_type)
     print(f"Imagens {image_type}, geradas e salvas com sucesso!")
 
-#model = BertModel.from_pretrained('bert-base-uncased', output_hidden_states=True)
-#tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
+
