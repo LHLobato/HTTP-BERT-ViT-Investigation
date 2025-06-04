@@ -11,7 +11,7 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 import time
 import os
 import torch.backends.cudnn as cudnn
-import config3
+import config
 from transformers import get_cosine_schedule_with_warmup
 from torch.cuda.amp import GradScaler, autocast
 from transformers import ViTForImageClassification, ViTConfig
@@ -186,13 +186,13 @@ save_dir = "modelos/VIT"
 test_dataset_dir = "dataframes/test0_https.csv"
 image_names = ["GASF", "GADF", "RPLOT"]
 ig_count=0
-for data_dir in config3.DATA_DIRS:    
-    for i in range(config3.NUM_DATASETS):
+for data_dir in config.DATA_DIRS:    
+    for i in range(config.NUM_DATASETS):
         #---- Diretorios que serao utilizados seja para carregar as imagens.
         #----Diretório de salvamento do modelo, e do resultado dos testes.
         #----Transform que carrega as imagens para as dimensões corretas. 
         transform = transforms.Compose([
-        #transforms.Resize((config3.RESOLUTION,config3.RESOLUTION )),
+            transforms.Resize((config.RESOLUTION,config.RESOLUTION )),
             transforms.ToTensor(),
             #transforms.Normalize(mean=[0.485,0.456,0.406], std=[0.229,0.224, 0.225])
             #removendo normalização do ImageNet que estava sendo aplicada. 
@@ -204,16 +204,16 @@ for data_dir in config3.DATA_DIRS:
         test_dataset = datasets.ImageFolder(root = data_dir[i]["test"], transform=transform)
         
         #-----Definição dos DataLoaders.
-        test_loader = DataLoader(test_dataset, batch_size = config3.BATCH_SIZE, shuffle=False,num_workers=8, pin_memory=True)
-        val_loader = DataLoader(val_dataset, batch_size = config3.BATCH_SIZE, shuffle=False, num_workers=8, pin_memory=True)
-        train_loader = DataLoader(train_dataset, batch_size = config3.BATCH_SIZE, shuffle=True,num_workers=8, pin_memory=True)
+        test_loader = DataLoader(test_dataset, batch_size = config.BATCH_SIZE, shuffle=False,num_workers=8, pin_memory=True)
+        val_loader = DataLoader(val_dataset, batch_size = config.BATCH_SIZE, shuffle=False, num_workers=8, pin_memory=True)
+        train_loader = DataLoader(train_dataset, batch_size = config.BATCH_SIZE, shuffle=True,num_workers=8, pin_memory=True)
 
         #---- Definição do Nome do modelo que será salvo.
         #-----Função que calcula as métricas de acordo com as etapas de examinação.
         
         print("Dados carregados com sucesso...")
-        for num_layer in config3.UNFROZEN_LAYERS:
-            epochs = [config3.NUM_EPOCHS]
+        for num_layer in config.UNFROZEN_LAYERS:
+            epochs = [config.NUM_EPOCHS]
             save_model_name = f"ViT{i}{image_names[ig_count]}HTTP{num_layer}unfrozen"
             for num_epochs in epochs:
                 model = ViTForImageClassification.from_pretrained(
@@ -251,7 +251,7 @@ for data_dir in config3.DATA_DIRS:
             #---- Chamada das funcoes.
                 data = {"Image_Dataset": f"{image_names[ig_count]}{i}",
                     "Model": "ViT", 
-                    "Epochs": config3.NUM_EPOCHS,
+                    "Epochs": config.NUM_EPOCHS,
                     "Test_Loss":loss,
                     "Test_Acuracia": acc, 
                     "Test_Precisao": prec, 
@@ -260,12 +260,12 @@ for data_dir in config3.DATA_DIRS:
                     "Test_ROC-AUC": auc,
                     "Best_Acc_Train":best_train_acc,
                     "Best_Epoch_Acc":best_epoch,
-                    "Num_Samples":config3.NUM_SAMPLES,
-                    "Dropout":config3.P,
-                    "Resolution":config3.RESOLUTION,
+                    "Num_Samples":config.NUM_SAMPLES,
+                    "Dropout":config.P,
+                    "Resolution":config.RESOLUTION,
                     "Unfrozen_Layers":num_layer+1,
                     "Data Normalization": 'Yes', 
-                    "Weight Decay": config3.WEIGHT_DECAY,
+                    "Weight Decay": config.WEIGHT_DECAY,
                     "WarmuP": 'Yes'
                     }
 
