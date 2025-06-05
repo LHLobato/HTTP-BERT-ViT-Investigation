@@ -96,7 +96,7 @@ pipeline = Pipeline([
     ('scaler', MinMaxScaler())
 ])
 print("Shape of Samples after Feature Extraction", features.shape)
-features = pipeline.fit_transform()
+features = pipeline.fit_transform(features)
 print(f"Shape of Unique Feature after resize (image): {features[0].shape}")
 
 image_reshapes = {
