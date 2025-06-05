@@ -49,11 +49,12 @@ res = 64
 
 pipeline = Pipeline([
     ('tfidf', TfidfVectorizer(analyzer = 'char', sublinear_tf = True, lowercase=False, max_features= res*res, ngram_range=(3,3))),
+    ('pca', PCA(n_components=res)),
     ('scaler', MinMaxScaler())
 ])
 
 X_processed = pipeline.fit_transform(all_requests)
-X_processed = X_processed.reshape(-1, res,res)
+
 
 image_reshapes = {
     "GASF": GramianAngularField(method = "summation"),

@@ -1,4 +1,6 @@
 from numpy import sqrt
+from sklearn.decomposition import PCA
+from sklearn.pipeline import Pipeline
 from transformers import BertModel, BertTokenizer
 import torch
 from sklearn.metrics import roc_auc_score, accuracy_score
@@ -89,15 +91,13 @@ print("AUC no conjunto de teste:", test_auc)
 print("Acurácia: ", accuracy_score(y_test, y_pred))
 print(f"Desempenho atingido com resolução: {sqrt(len(features))}")
 
-scaler = MinMaxScaler()
-features = scaler.fit_transform(features)
-features = features.reshape(-1,64,64)
-
+pipeline = Pipeline([
+    ('pca', PCA(n_components=64)),
+    ('scaler', MinMaxScaler())
+])
 print("Shape of Samples after Feature Extraction", features.shape)
-
+features = pipeline.fit_transform(features)
 print(f"Shape of Unique Feature after resize (image): {features[0].shape}")
-
-
 image_reshapes = {
     "GASF": GramianAngularField(method = "summation"),
     "GADF": GramianAngularField(method = "difference"),
