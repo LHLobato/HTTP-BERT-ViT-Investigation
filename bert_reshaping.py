@@ -71,8 +71,8 @@ print("Model Loaded")
 features = []
 for i in range(len(all_requests)):
     features.append(extract_features(all_requests[i],model, tokenizer))
-features = torch.cat(features).to('cpu').numpy()
-print("Shape of unique Feature", features[0].shape)
+features = torch.cat(features).cpu().numpy()
+print("Shape of Samples after Feature Extraction", features.shape)
 X_train, X_test, y_train, y_test = train_test_split(
     features, labels, test_size=0.2, random_state=0
 )
@@ -92,6 +92,9 @@ print(f"Desempenho atingido com resolução: {sqrt(len(features))}")
 scaler = MinMaxScaler()
 features = scaler.fit_transform(features)
 features = features.reshape(-1,64,64)
+
+print("Shape of Samples after Feature Extraction", features.shape)
+
 print(f"Shape of Unique Feature after resize (image): {features[0].shape}")
 
 
@@ -100,30 +103,32 @@ image_reshapes = {
     "GADF": GramianAngularField(method = "difference"),
     "RPLOT": RecurrencePlot(dimension=1,threshold='point', percentage=20) 
 }
-print("Initializing reshaping...")
-for image_type, transformer in image_reshapes.items():
-    X_1d_transformed = transformer.fit_transform(features)
-    X_train, X_temp, y_train, y_temp = train_test_split(
-        X_1d_transformed, labels, test_size=0.3, stratify=labels, random_state=0
-    )
-    X_val, X_test, y_val, y_test = train_test_split(
-        X_temp, y_temp, test_size=0.5, stratify=y_temp, random_state=0
-    )
-    base_dir = f"datasets/BERT-PREPROCESSED/{str(image_type)}"
-    train_dir, val_dir, test_dir = [
-        os.path.join(base_dir, d) for d in ["train", "val", "test"]
-    ]
-    for subdir in [train_dir, val_dir, test_dir]:
-        os.makedirs(os.path.join(subdir, "benign"), exist_ok=True)
-        os.makedirs(os.path.join(subdir, "malicious"), exist_ok=True)
-    
-    datasets = {
-        "train": (X_train, y_train),
-        "val": (X_val, y_val),
-        "test": (X_test, y_test),
-    }
-    for dataset_name, (X_data, y_data) in datasets.items():
-        save_images(dataset_name, X_data, y_data, image_type)
-    print(f"Imagens {image_type}, geradas e salvas com sucesso!")
+states = [0,100,1000]
+num_datasets = 3
 
-
+for i in range(num_datasets):
+    for state in states:   
+        for image_type, transformer in image_reshapes.items():
+            X_1d_transformed = transformer.fit_transform(features)
+            X_train, X_temp, y_train, y_temp = train_test_split(
+                X_1d_transformed, labels, test_size=0.3, stratify=labels, random_state=state
+            )
+            X_val, X_test, y_val, y_test = train_test_split(
+                X_temp, y_temp, test_size=0.5, stratify=y_temp, random_state=state
+            )
+            base_dir = f"datasets/TFIDV/{str(image_type)}+{i}"
+            train_dir, val_dir, test_dir = [
+                os.path.join(base_dir, d) for d in ["train", "val", "test"]
+            ]
+            for subdir in [train_dir, val_dir, test_dir]:
+                os.makedirs(os.path.join(subdir, "benign"), exist_ok=True)
+                os.makedirs(os.path.join(subdir, "malicious"), exist_ok=True)
+            
+            datasets = {
+                "train": (X_train, y_train),
+                "val": (X_val, y_val),
+                "test": (X_test, y_test),
+            }
+            for dataset_name, (X_data, y_data) in datasets.items():
+                save_images(dataset_name, X_data, y_data, image_type)
+            print(f"Imagens {image_type}, geradas e salvas com sucesso!")
