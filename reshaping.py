@@ -66,14 +66,14 @@ i=0
 states = [0,100,1000]
 for state in states:   
     for image_type, transformer in image_reshapes.items():
-        X_1d_transformed = transformer.fit_transform(features)
+        X_1d_transformed = transformer.fit_transform(X_processed)
         X_train, X_temp, y_train, y_temp = train_test_split(
             X_1d_transformed, labels, test_size=0.3, stratify=labels, random_state=state
         )
         X_val, X_test, y_val, y_test = train_test_split(
             X_temp, y_temp, test_size=0.5, stratify=y_temp, random_state=state
         )
-        base_dir = f"datasets/TFIDV/{str(image_type)}+{i}"
+        base_dir = f"datasets/TFIDV/{str(image_type)}{i}"
         train_dir, val_dir, test_dir = [
             os.path.join(base_dir, d) for d in ["train", "val", "test"]
         ]
