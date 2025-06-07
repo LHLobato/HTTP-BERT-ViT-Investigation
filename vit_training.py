@@ -248,7 +248,7 @@ for data_dir in config.DATA_DIRS:
                 print(f'Melhor acurácia de treinamento: {best_train_acc} atingida com {best_epoch} épocas')
 
             #---- Chamada das funcoes.
-                data = {"Image_Dataset": f"{image_names[ig_count]}{i}",
+                data = {"Image_Dataset": f"{image_names[ig_count]}{i}-{config.current_dataset}",
                     "Model": "ViT", 
                     "Epochs": config.NUM_EPOCHS,
                     "Test_Loss":loss,

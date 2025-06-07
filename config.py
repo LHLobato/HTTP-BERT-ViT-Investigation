@@ -1,52 +1,52 @@
 sample_feature_extraction_type = ["TFIDV", "BERT-PREPROCESSED"]
-
+current_dataset = sample_feature_extraction_type[1]
 DATA_DIR_0 = {
-    "test":f"datasets/{sample_feature_extraction_type[0]}/GASF0/test", 
-    "train":f"datasets/{sample_feature_extraction_type[0]}/GASF0/train",
-    "val":f"datasets/{sample_feature_extraction_type[0]}/GASF0/val",
+    "test":f"datasets/{current_dataset}/GASF0/test", 
+    "train":f"datasets/{current_dataset}/GASF0/train",
+    "val":f"datasets/{current_dataset}/GASF0/val",
 }
 
 DATA_DIR_1 = {
-    "test":f"datasets/{sample_feature_extraction_type[0]}/GASF1/test", 
-    "train":f"datasets/{sample_feature_extraction_type[0]}/GASF1/train",
-    "val":f"datasets/{sample_feature_extraction_type[0]}/GASF1/val",
+    "test":f"datasets/{current_dataset}/GASF1/test", 
+    "train":f"datasets/{current_dataset}/GASF1/train",
+    "val":f"datasets/{current_dataset}/GASF1/val",
 }
 DATA_DIR_2 = {
-    "test":f"datasets/{sample_feature_extraction_type[0]}/GASF2/test", 
-    "train":f"datasets/{sample_feature_extraction_type[0]}/GASF2/train",
-    "val":f"datasets/{sample_feature_extraction_type[0]}/GASF2/val",
+    "test":f"datasets/{current_dataset}/GASF2/test", 
+    "train":f"datasets/{current_dataset}/GASF2/train",
+    "val":f"datasets/{current_dataset}/GASF2/val",
 }
 
 DATA_DIR_3 = {
-    "test":f"datasets/{sample_feature_extraction_type[0]}/GADF0/test", 
-    "train":f"datasets/{sample_feature_extraction_type[0]}/GADF0/train",
-    "val":f"datasets/{sample_feature_extraction_type[0]}/GADF0/val",
+    "test":f"datasets/{current_dataset}/GADF0/test", 
+    "train":f"datasets/{current_dataset}/GADF0/train",
+    "val":f"datasets/{current_dataset}/GADF0/val",
 }
 DATA_DIR_4 = {
-    "test":f"datasets/{sample_feature_extraction_type[0]}/GADF1/test", 
-    "train":f"datasets/{sample_feature_extraction_type[0]}/GADF1/train",
-    "val":f"datasets/{sample_feature_extraction_type[0]}/GADF1/val",
+    "test":f"datasets/{current_dataset}/GADF1/test", 
+    "train":f"datasets/{current_dataset}/GADF1/train",
+    "val":f"datasets/{current_dataset}/GADF1/val",
 }
 DATA_DIR_5 = {
-    "test":f"datasets/{sample_feature_extraction_type[0]}/GADF2/test", 
-    "train":f"datasets/{sample_feature_extraction_type[0]}/GADF2/train",
-    "val":f"datasets/{sample_feature_extraction_type[0]}/GADF2/val",
+    "test":f"datasets/{current_dataset}/GADF2/test", 
+    "train":f"datasets/{current_dataset}/GADF2/train",
+    "val":f"datasets/{current_dataset}/GADF2/val",
 }
 
 DATA_DIR_6={
-    "test":f"datasets/{sample_feature_extraction_type[0]}/RPLOT0/test", 
-    "train":f"datasets/{sample_feature_extraction_type[0]}/RPLOT0/train",
-    "val":f"datasets/{sample_feature_extraction_type[0]}/RPLOT0/val",
+    "test":f"datasets/{current_dataset}/RPLOT0/test", 
+    "train":f"datasets/{current_dataset}/RPLOT0/train",
+    "val":f"datasets/{current_dataset}/RPLOT0/val",
 }
 DATA_DIR_7={
-    "test":f"datasets/{sample_feature_extraction_type[0]}/RPLOT1/test", 
-    "train":f"datasets/{sample_feature_extraction_type[0]}/RPLOT1/train",
-    "val":f"datasets/{sample_feature_extraction_type[0]}/RPLOT1/val",
+    "test":f"datasets/{current_dataset}/RPLOT1/test", 
+    "train":f"datasets/{current_dataset}/RPLOT1/train",
+    "val":f"datasets/{current_dataset}/RPLOT1/val",
 }
 DATA_DIR_8={
-    "test":f"datasets/{sample_feature_extraction_type[0]}/RPLOT2/test", 
-    "train":f"datasets/{sample_feature_extraction_type[0]}/RPLOT2/train",
-    "val":f"datasets/{sample_feature_extraction_type[0]}/RPLOT2/val",
+    "test":f"datasets/{current_dataset}/RPLOT2/test", 
+    "train":f"datasets/{current_dataset}/RPLOT2/train",
+    "val":f"datasets/{current_dataset}/RPLOT2/val",
 }
 
 
