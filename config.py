@@ -1,4 +1,4 @@
-sample_feature_extraction_type = ["TFIDV", "BERT-PREPROCESSED"]
+sample_feature_extraction_type = ["TFIDV", "BERT-PREPROCESSED", "TFIVD-fullfeatures"]
 current_dataset = sample_feature_extraction_type[1]
 DATA_DIR_0 = {
     "test":f"datasets/{current_dataset}/GASF0/test", 
@@ -61,6 +61,6 @@ P = 0.2
 WEIGHT_DECAY = 0.05
 NUM_SAMPLES = 61574
 NUM_EPOCHS = 100
-RESOLUTION = 64
+RESOLUTION = 24
 NUM_DATASETS = 3
 UNFROZEN_LAYERS = [0,4]

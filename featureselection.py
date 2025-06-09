@@ -20,20 +20,6 @@ def loadData(file):
             result.append(d)
     return result
 
-
-def extract_features(text, model, tokenizer, device = 'cuda'):
-    input_ids = torch.tensor([tokenizer.encode(text, add_special_tokens=True)])
-    with torch.no_grad():
-        outputs = model(input_ids)
-        hidden_states = outputs[2]
-    token_vecs = []
-    for layer in range(-4, 0):
-        token_vecs.append(hidden_states[layer][0])
-    features = []
-    for token in token_vecs:
-        features.append(torch.mean(token, dim=0))
-    return torch.stack(features)
-
 bad_requests = loadData('PreProcessedAnomalous.txt')
 good_requests = loadData('PreprocessedNormalTraining.txt')
 all_requests = bad_requests + good_requests
