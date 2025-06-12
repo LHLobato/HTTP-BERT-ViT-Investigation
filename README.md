@@ -13,5 +13,6 @@ A partir do dataset pré-processado, tokenizadores foram aplicados, de modo a ex
 Foram examinados modelos Vision Transformers pré-treinados do ImageNet, de modo que foram examinadas diferentes situações de Transfer Learning e Fine-Tuning, variando o número de camadas descongeladas para atualização de pesos durante o treinamento.
 
 ## Conclusão
-O desempenho apresentado mostrou-se viável e considerável na tarefa examinada, porém com possíveis melhorias. Os resultados podem ser encontrados na pasta dataframes do repositório, no arquivo test_https0.csv.
+O desempenho apresentado mostrou-se viável e considerável na tarefa examinada, porém com possíveis melhorias. Foram testadas abordagens extraindo 4096 features do TfidfVectorizer, e também com o valor default, o qual apresenta um número bem maior de features, além da extração de características com modelos BERT. As configurações estão especificadas no arquivo 'config.py', em 'model_training'.
+Os resultados podem ser encontrados na pasta dataframes do repositório, no arquivo test_https0.csv.
 

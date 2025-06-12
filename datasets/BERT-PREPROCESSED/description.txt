@@ -1,0 +1,1 @@
+Directory that contais images generated from BERT feature extraction. 

@@ -4,10 +4,10 @@ import io
 import urllib.parse
 import json
 
-normal_file_raw = 'normalTrafficTraining.txt'
-anomaly_file_raw = 'anomalousTrafficTest.txt'
-normal_file_parse = 'normalRequestTraining2.txt'
-anomaly_file_parse = 'anomalousRequestTest2.txt'
+normal_file_raw = '../datasets/CSIC-2010/normalTrafficTraining.txt'
+anomaly_file_raw = '../datasets/CSIC-2010/anomalousTrafficTest.txt'
+normal_file_parse = '../datasets/CSIC-2010/PreprocessedNormalTraining.txt'
+anomaly_file_parse = '../datasets/CSIC-2010/PreProcessedAnomalous.txt'
 
 def parse_file(file_in, file_out):
     fin = open(file_in, 'r', encoding='utf-8', errors='ignore')

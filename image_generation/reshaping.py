@@ -33,8 +33,8 @@ def save_images(dataset_name, X_data, y_data, arg):
         plt.imsave(file_path, image, cmap=colors)
     print(f"Imagens salvas em {base_dir}/{dataset_name}")
 
-bad_requests = loadData('PreProcessedAnomalous.txt')
-good_requests = loadData('PreprocessedNormalTraining.txt')
+bad_requests = loadData('../datasets/CSIC-2010/PreProcessedAnomalous.txt')
+good_requests = loadData('../datasets/CSIC-2010/PreprocessedNormalTraining.txt')
 
 all_requests = bad_requests + good_requests
 labels_Bad = [1] * len(bad_requests)
@@ -73,7 +73,7 @@ for state in states:
         X_val, X_test, y_val, y_test = train_test_split(
             X_temp, y_temp, test_size=0.5, stratify=y_temp, random_state=state
         )
-        base_dir = f"datasets/TFIDV/{str(image_type)}{i}"
+        base_dir = f"../datasets/TFIDV/{str(image_type)}{i}"
         train_dir, val_dir, test_dir = [
             os.path.join(base_dir, d) for d in ["train", "val", "test"]
         ]

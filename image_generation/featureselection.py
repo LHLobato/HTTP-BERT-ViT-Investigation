@@ -8,7 +8,6 @@ import io
 from sklearn.pipeline import Pipeline
 from transformers import BertModel, BertTokenizer
 from sklearn.preprocessing import MaxAbsScaler, MinMaxScaler 
-import torch
 
 def loadData(file):
     with open(file, 'r', encoding="utf8") as f:
@@ -20,8 +19,8 @@ def loadData(file):
             result.append(d)
     return result
 
-bad_requests = loadData('PreProcessedAnomalous.txt')
-good_requests = loadData('PreprocessedNormalTraining.txt')
+bad_requests = loadData('../datasets/CSIC-2010/PreProcessedAnomalous.txt')
+good_requests = loadData('../datasets/CSIC-2010/PreprocessedNormalTraining.txt')
 all_requests = bad_requests + good_requests
 
 labels_Bad = [1] * len(bad_requests)
